@@ -1,0 +1,11 @@
+{
+  "name":         "microajax",
+  "version":      "1.0.0",
+  "description":  "Cross-browser XMLHttpRequest.",
+  "keywords":     ["ajax", "xhr", "XMLHttpRequest", "ActiveXObject"],
+  "license":      "MIT",
+  "scripts":      [
+    "index.js"
+  ],
+  "dependencies": {}
+}
