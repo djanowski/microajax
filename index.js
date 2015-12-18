@@ -6,7 +6,7 @@ function newXHR() {
   return null;
 };
 
-module.exports = function(url, callback, postBody) {
+module.exports = function microajax(url, callback, postBody) {
   var xhr = newXHR();
 
   if (!xhr)
@@ -26,4 +26,6 @@ module.exports = function(url, callback, postBody) {
 
   xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
   xhr.send(this.postBody);
+
+  return xhr;
 };
