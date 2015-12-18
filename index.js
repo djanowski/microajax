@@ -10,7 +10,7 @@ module.exports = function(url, callback, postBody) {
   var xhr = newXHR();
 
   if (!xhr)
-    return;
+    throw new Error('No XMLHttpRequest object available.');
 
   xhr.onreadystatechange = function() {
     if (xhr.readyState === 4)
