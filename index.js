@@ -1,43 +1,29 @@
-module.exports = function(url, callbackFunction)
-{
-	this.bindFunction = function (caller, object) {
-		return function() {
-			return caller.apply(object, [object]);
-		};
-	};
+function newXHR() {
+  if (window.ActiveXObject)
+    return new ActiveXObject('Microsoft.XMLHTTP');
+  else if (window.XMLHttpRequest)
+    return new XMLHttpRequest();
+  return null;
+};
 
-	this.stateChange = function (object) {
-		if (this.request.readyState==4)
-			this.callbackFunction(this.request.responseText);
-	};
+module.exports = function(url, callback, postBody) {
+  var xhr = newXHR();
 
-	this.getRequest = function() {
-		if (window.ActiveXObject)
-			return new ActiveXObject('Microsoft.XMLHTTP');
-		else if (window.XMLHttpRequest)
-			return new XMLHttpRequest();
-		return false;
-	};
+  if (!xhr)
+    return;
 
-	this.postBody = (arguments[2] || "");
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4)
+      callback(xhr.responseText);
+  };
 
-	this.callbackFunction=callbackFunction;
-	this.url=url;
-	this.request = this.getRequest();
+  if (postBody) {
+    xhr.open('POST', url, true);
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+  }
+  else
+    xhr.open('GET', url, true);
 
-	if(this.request) {
-		var req = this.request;
-		req.onreadystatechange = this.bindFunction(this.stateChange, this);
-
-		if (this.postBody!=="") {
-			req.open("POST", url, true);
-			req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-		} else {
-			req.open("GET", url, true);
-		}
-
-    req.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-
-		req.send(this.postBody);
-	}
-}
+  xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+  xhr.send(this.postBody);
+};
