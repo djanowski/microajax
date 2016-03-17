@@ -14,7 +14,7 @@ module.exports = function microajax(url, callback, postBody) {
 
   xhr.onreadystatechange = function() {
     if (xhr.readyState === 4)
-      callback(xhr.responseText);
+      callback(xhr.responseText, xhr.status);
   };
 
   if (postBody) {
